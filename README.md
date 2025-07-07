@@ -1,3 +1,5 @@
+<img src="https://your-image-link.com/banner.png" alt="Project Banner" width="100%" />
+
 # DevNewsCopilot – Blackbox.ai-Powered News Assistant (
 Lablab 2025 Hackathon Submission from AgentOps
 
