@@ -52,8 +52,7 @@ User Topic Input → FastAPI Endpoint (/generate-news)
 
 ## 🌐 Live Demo
 
-- Frontend: TBD
-- Backend: TBD
+- Demo Link: https://qwtflr.csb.app/
 
 ---
 
