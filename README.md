@@ -1,4 +1,4 @@
-<img src="https://your-image-link.com/banner.png" alt="Project Banner" width="100%" />
+<img src="https://github.com/nosheen/DevNews-Copilot-Blackbox.ai/blob/main/DevNewsCopilotBanner%20Image.png" alt="Project Banner" width="100%" />
 
 # DevNewsCopilot – Blackbox.ai-Powered News Assistant (
 Lablab 2025 Hackathon Submission from AgentOps
