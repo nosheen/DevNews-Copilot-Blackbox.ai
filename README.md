@@ -1,4 +1,4 @@
-# 🧠 DevNewsCopilot – Blackbox.ai-Powered News Assistant (
+# DevNewsCopilot – Blackbox.ai-Powered News Assistant (
 Lablab 2025 Hackathon Submission from AgentOps
 
 **DevNewsCopilot** is a real-time, AI-powered tool designed to help developers cut through noisy tech updates and focus on what matters. It combines autonomous agents with LLMs to scan, summarize, and deliver actionable insights and code snippets from the latest AI and development news.
@@ -7,7 +7,7 @@ Lablab 2025 Hackathon Submission from AgentOps
 
 ---
 
-## 🚀 What It Does
+## What It Does
 
 - Accepts user input on any tech/dev topic (e.g., "open-source LLMs", "AI evals")
 - Uses **CrewAI Researcher Agent** to gather 7–10 recent, high-quality articles
