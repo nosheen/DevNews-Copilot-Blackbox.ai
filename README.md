@@ -1,4 +1,3 @@
-# 🧠 DevNewsCopilot – Blackbox.ai-Powered News Assistant (
 # DevNewsCopilot – Blackbox.ai-Powered News Assistant (
 Lablab 2025 Hackathon Submission from AgentOps
 
