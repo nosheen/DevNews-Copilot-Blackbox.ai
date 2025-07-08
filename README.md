@@ -36,7 +36,7 @@ These keys are used to query:
 ## ⚙️ Running the Backend
 
 ```bash
-uvicorn backend_main:app --reload
+uvicorn main_backend:app --reload
 ```
 
 This will start the FastAPI server at `http://localhost:8000`.
