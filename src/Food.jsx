@@ -39,7 +39,7 @@ const DevAINewsGenerator = () => {
   const dropdownRef = useRef(null);
 
   // ngrok URL
-  const API_BASE_URL = "https://4f4f-105-159-136-174.ngrok-free.app";
+  const API_BASE_URL = "http://localhost:8000";
 
   const categories = [
     "AI Models",
