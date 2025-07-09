@@ -22,7 +22,8 @@
   - ✅ Real code snippets or usage examples
 - Displays results in a responsive, animated developer UI
 
----
+## Technology & Category Tags
+#BlackboxAI #Groq #CrewAI #FastAPI #React #DevTools #AIProductivity #HackathonFinalist
 
 ## 📽️ Demo Video
 
