@@ -26,7 +26,7 @@
 
 ## 📽️ Demo Video
 
-🎥 [Watch Full Demo](https://your-demo-video-link.com)
+🎥 [Watch Full Demo](https://github.com/nosheen/DevNews-Copilot-Blackbox.ai/blob/Documents/DevNewsCopilot%20Demo.mp4)
 
 ---
 
