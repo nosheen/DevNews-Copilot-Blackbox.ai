@@ -17,6 +17,7 @@ import {
   Trash2,
   RefreshCw,
   BookOpen,
+  Eye,
 } from "lucide-react";
 
 const DevAINewsGenerator = () => {
@@ -36,11 +37,12 @@ const DevAINewsGenerator = () => {
   const [debugInfo, setDebugInfo] = useState("");
   const [showTaskHistory, setShowTaskHistory] = useState(false);
   const [taskHistory, setTaskHistory] = useState([]);
+  const [showPreviewModal, setShowPreviewModal] = useState(null);
   const dropdownRef = useRef(null);
 
-  // ngrok URL
+  // ngrok URL http://localhost:8000
+  //const API_BASE_URL = "https://0fa926a2f2a3.ngrok-free.app";
   const API_BASE_URL = "http://localhost:8000";
-
   const categories = [
     "AI Models",
     "Research",
@@ -69,7 +71,7 @@ const DevAINewsGenerator = () => {
     setTaskHistory(newHistory);
   };
 
-  // 添加任務到歷史記錄
+  // 添加任務到歷史記錄 - 保存完整的 summary 數據
   const addToTaskHistory = (topic, results) => {
     const newTask = {
       id: Date.now(),
@@ -77,6 +79,7 @@ const DevAINewsGenerator = () => {
       timestamp: new Date().toISOString(),
       resultsCount: results.length,
       status: "completed",
+      fullResults: results, // 保存完整的結果
       results: results.slice(0, 3), // 只保存前3個結果的預覽
     };
 
@@ -268,10 +271,19 @@ const DevAINewsGenerator = () => {
     return date.toLocaleDateString();
   };
 
+  // 修改：從歷史記錄加載任務並顯示完整結果
   const loadTaskFromHistory = (task) => {
     setTopic(task.topic);
+    // 如果有完整結果，加載到當前顯示
+    if (task.fullResults && task.fullResults.length > 0) {
+      setNewsItems(task.fullResults);
+      setExpandedItems(new Set()); // 重置展開狀態
+      setCopiedStates({}); // 重置複製狀態
+      setCopyMessage("Task loaded with full results! 📋");
+    } else {
+      setCopyMessage("Task loaded from history 📋");
+    }
     setShowTaskHistory(false);
-    setCopyMessage("Task loaded from history 📋");
     setTimeout(() => setCopyMessage(""), 3000);
   };
 
@@ -284,6 +296,15 @@ const DevAINewsGenerator = () => {
   const deleteTaskFromHistory = (taskId) => {
     const updatedHistory = taskHistory.filter((task) => task.id !== taskId);
     saveTaskHistory(updatedHistory);
+  };
+
+  // 新增：預覽歷史任務的完整結果
+  const previewTaskResults = (task) => {
+    setShowPreviewModal(task);
+  };
+
+  const closePreviewModal = () => {
+    setShowPreviewModal(null);
   };
 
   const filteredNews = newsItems.filter((item) => {
@@ -324,7 +345,6 @@ const DevAINewsGenerator = () => {
       {debugInfo && (
         <div className="fixed bottom-4 left-4 bg-blue-500/20 backdrop-blur-sm border border-blue-500/30 text-blue-300 px-4 py-2 rounded-lg z-50 max-w-md text-xs">
           <div className="flex items-start gap-2">
-            {/* <span className="text-blue-400 font-mono">DEBUG:</span>*/}
             <pre className="whitespace-pre-wrap text-xs">{debugInfo}</pre>
             <button
               onClick={() => setDebugInfo("")}
@@ -335,6 +355,7 @@ const DevAINewsGenerator = () => {
           </div>
         </div>
       )}
+
       {/* Floating Task History Button */}
       <div className="fixed bottom-6 right-6 z-40">
         <button
@@ -417,6 +438,11 @@ const DevAINewsGenerator = () => {
                             <span className="px-2 py-1 bg-green-500/20 text-green-300 rounded-full text-xs">
                               {task.resultsCount} results
                             </span>
+                            {task.fullResults && (
+                              <span className="px-2 py-1 bg-blue-500/20 text-blue-300 rounded-full text-xs">
+                                Full data saved
+                              </span>
+                            )}
                           </div>
                           <div className="flex items-center gap-4 text-sm text-slate-400">
                             <div className="flex items-center gap-1">
@@ -430,6 +456,16 @@ const DevAINewsGenerator = () => {
                           </div>
                         </div>
                         <div className="flex gap-2">
+                          {task.fullResults && (
+                            <button
+                              onClick={() => previewTaskResults(task)}
+                              className="p-2 bg-purple-500/20 rounded-lg hover:bg-purple-500/30 transition-all duration-300 flex items-center gap-2 text-purple-300"
+                              title="Preview results"
+                            >
+                              <Eye className="w-4 h-4" />
+                              <span className="text-sm">Preview</span>
+                            </button>
+                          )}
                           <button
                             onClick={() => loadTaskFromHistory(task)}
                             className="p-2 bg-blue-500/20 rounded-lg hover:bg-blue-500/30 transition-all duration-300 flex items-center gap-2 text-blue-300"
@@ -481,6 +517,99 @@ const DevAINewsGenerator = () => {
           </div>
         </div>
       )}
+
+      {/* Preview Modal for Task Results */}
+      {showPreviewModal && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+          <div className="bg-slate-900 rounded-2xl border border-white/20 max-w-6xl w-full max-h-[85vh] overflow-hidden">
+            <div className="p-6 border-b border-white/20">
+              <div className="flex justify-between items-center">
+                <div className="flex items-center gap-3">
+                  <Eye className="w-6 h-6 text-purple-400" />
+                  <h2 className="text-2xl font-bold text-white">
+                    Preview: {showPreviewModal.topic}
+                  </h2>
+                  <span className="px-3 py-1 bg-purple-500/20 text-purple-300 rounded-full text-sm">
+                    {showPreviewModal.resultsCount} results
+                  </span>
+                </div>
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => loadTaskFromHistory(showPreviewModal)}
+                    className="p-2 bg-blue-500/20 rounded-lg hover:bg-blue-500/30 transition-all duration-300 flex items-center gap-2 text-blue-300"
+                    title="Load this task"
+                  >
+                    <RefreshCw className="w-4 h-4" />
+                    <span className="text-sm">Load</span>
+                  </button>
+                  <button
+                    onClick={closePreviewModal}
+                    className="p-2 hover:bg-white/10 rounded-lg transition-all duration-300"
+                  >
+                    <X className="w-6 h-6 text-white" />
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div className="overflow-y-auto max-h-[calc(85vh-140px)] p-6">
+              {showPreviewModal.fullResults &&
+              showPreviewModal.fullResults.length > 0 ? (
+                <div className="space-y-4">
+                  {showPreviewModal.fullResults.map((item, index) => (
+                    <div
+                      key={index}
+                      className="bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 p-4"
+                    >
+                      <div className="flex justify-between items-start mb-3">
+                        <div className="flex-1">
+                          <div className="flex items-center gap-3 mb-2">
+                            <h3 className="text-lg font-semibold text-white">
+                              {item.title}
+                            </h3>
+                            <span className="px-2 py-1 bg-purple-500/20 text-purple-300 rounded-full text-xs">
+                              {item.category}
+                            </span>
+                          </div>
+                          <p className="text-slate-300 text-sm mb-2">
+                            {item.summary}
+                          </p>
+                          <div className="flex items-center text-blue-400 text-sm">
+                            <Users className="w-4 h-4 mr-2" />
+                            <span className="font-medium">
+                              Developer Insight:
+                            </span>
+                            <span className="text-slate-300 ml-2">
+                              {item.insight}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+
+                      {item.code && (
+                        <div className="mt-3 p-3 bg-black/20 rounded-lg border border-white/10">
+                          <h4 className="text-white font-medium mb-2 text-sm">
+                            Code Example
+                          </h4>
+                          <pre className="bg-slate-900/50 p-3 rounded-lg overflow-x-auto text-xs">
+                            <code className="text-slate-300">{item.code}</code>
+                          </pre>
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center py-12">
+                  <p className="text-slate-400">
+                    No full results available for this task.
+                  </p>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
       {/* Header */}
       <div className="relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-purple-600/20 blur-3xl"></div>
@@ -523,7 +652,7 @@ const DevAINewsGenerator = () => {
               onKeyPress={(e) => e.key === "Enter" && handleGenerate()}
             />
             <button
-              onClick={handleGenerate}
+              onClick={() => handleGenerate()}
               disabled={isGenerating || !topic.trim()}
               className="absolute right-2 top-2 px-8 py-2 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-xl hover:from-blue-600 hover:to-purple-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 transform hover:scale-105"
             >
@@ -871,3 +1000,4 @@ const DevAINewsGenerator = () => {
 };
 
 export default DevAINewsGenerator;
+
