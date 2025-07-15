@@ -98,7 +98,7 @@ uvicorn main:app --reload
 🧑‍💻 Team AgentOps
 Name	Role
 Nosheen Irshad	PM, QA, Documentation, GitHub & Submission
-Taha Saddiqui	Backend, FastAPI, Groq, LLM Routing
+Taha Saddiqui	Backend, FastAPI, Groq, LLM Routing, Team Lead
 Reda	Blackbox.ai API Integration, Testing
 Ella	Frontend Engineering, UI, Transitions
 Alishba Shehzadi	UI/UX Design, Slides, Presentation Polishing
